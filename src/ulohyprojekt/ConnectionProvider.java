@@ -73,4 +73,24 @@ public class ConnectionProvider {
         String dateString = sdf.format(date);
         return dateString;
     }
+    
+    public void addTask(String taskname, String desc, String deadline){
+        String query = "INSERT INTO tasks(taskname, description, deadline, dateCreated)"
+                + " VALUES(?, ?, ?, ?)";
+        String currDate = getCurrentDateTime();
+        Connection conn = getConnection();
+        if(conn != null){
+            try{
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, taskname);
+                ps.setString(2, desc);
+                ps.setString(3, deadline);
+                ps.setString(4, currDate);
+                ps.execute();
+                conn.close();
+            }catch(SQLException ex){
+                System.out.println("Error: " + ex.toString());
+            }
+        }
+    }
 }

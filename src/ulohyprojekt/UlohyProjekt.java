@@ -5,6 +5,8 @@
  */
 package ulohyprojekt;
 
+import gui.MainForm;
+
 
 /**
  *
@@ -17,8 +19,8 @@ public class UlohyProjekt {
      */
     public static void main(String[] args) {
         
-        ConnectionProvider conn = new ConnectionProvider();
-        System.out.println(conn.getTasks());
+        MainForm mainform = new MainForm();
+        mainform.setVisible(true);
     }
     
 }
