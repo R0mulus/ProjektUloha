@@ -17,6 +17,7 @@ public class MainForm extends javax.swing.JFrame {
     public MainForm() {
         initComponents();
         setLocationRelativeTo(null);
+        setTitle("Task organizer");
     }
 
     /**
@@ -59,6 +60,11 @@ public class MainForm extends javax.swing.JFrame {
         jMenu1.add(menuAddNewTask);
 
         MainFormMenuFileExit.setText("Exit");
+        MainFormMenuFileExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MainFormMenuFileExitActionPerformed(evt);
+            }
+        });
         jMenu1.add(MainFormMenuFileExit);
 
         jMenuBar1.add(jMenu1);
@@ -75,14 +81,14 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addContainerGap(480, Short.MAX_VALUE))
+                .addContainerGap(492, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(358, Short.MAX_VALUE))
+                .addContainerGap(413, Short.MAX_VALUE))
         );
 
         pack();
@@ -92,6 +98,11 @@ public class MainForm extends javax.swing.JFrame {
         NewTask newtask = new NewTask();
         newtask.setVisible(true);
     }//GEN-LAST:event_menuAddNewTaskActionPerformed
+
+    private void MainFormMenuFileExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MainFormMenuFileExitActionPerformed
+        ExitConfirm exitConfirm = new ExitConfirm();
+        exitConfirm.setVisible(true);
+    }//GEN-LAST:event_MainFormMenuFileExitActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

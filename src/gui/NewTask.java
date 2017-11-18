@@ -7,8 +7,16 @@ package gui;
 
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import static java.lang.Integer.parseInt;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.text.NumberFormatter;
 import ulohyprojekt.ConnectionProvider;
 
 /**
@@ -17,13 +25,22 @@ import ulohyprojekt.ConnectionProvider;
  */
 public class NewTask extends javax.swing.JFrame {
 
+
     /**
      * Creates new form NewTask
      */
     public NewTask() {
         initComponents();
-        setLocationRelativeTo(null);
+        setTitle("New task");
+        setAlwaysOnTop(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        Date currDate = new Date();
+        newTaskDatePicker.setDate(currDate);
+        newTaskDatePicker.getEditor().setEditable(false);
+        JFormattedTextField spinnerHH = ((JSpinner.NumberEditor) newTaskHH.getEditor()).getTextField();
+        JFormattedTextField spinnerMM = ((JSpinner.NumberEditor) newTaskMM.getEditor()).getTextField();
+        ((NumberFormatter) spinnerHH.getFormatter()).setAllowsInvalid(false);
+        ((NumberFormatter) spinnerMM.getFormatter()).setAllowsInvalid(false);
     }
 
     /**
@@ -41,12 +58,15 @@ public class NewTask extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         newTaskName = new javax.swing.JTextField();
-        newTaskDate = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         newTaskDesc = new javax.swing.JTextArea();
-        newTaskTime = new javax.swing.JTextField();
         btnAddTask = new javax.swing.JButton();
         btnCancelTask = new javax.swing.JButton();
+        newTaskDatePicker = new org.jdesktop.swingx.JXDatePicker();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        newTaskHH = new javax.swing.JSpinner();
+        newTaskMM = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -95,35 +115,63 @@ public class NewTask extends javax.swing.JFrame {
             }
         });
 
+        newTaskDatePicker.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                newTaskDatePickerKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                newTaskDatePickerKeyTyped(evt);
+            }
+        });
+
+        jLabel6.setText("Hour");
+
+        jLabel7.setText("Min");
+
+        newTaskHH.setModel(new javax.swing.SpinnerNumberModel(0, 0, 23, 1));
+        newTaskHH.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                newTaskHHKeyPressed(evt);
+            }
+        });
+
+        newTaskMM.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel1))
+                        .addComponent(btnAddTask, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(80, 80, 80)
+                        .addComponent(btnCancelTask, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5))
+                        .addComponent(jLabel1)
+                        .addGap(45, 45, 45)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(newTaskHH, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(newTaskName)
-                            .addComponent(newTaskDate)
-                            .addComponent(newTaskTime)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))))
-                .addGap(73, 73, 73))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnAddTask, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(newTaskMM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(155, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5))
                 .addGap(18, 18, 18)
-                .addComponent(btnCancelTask, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(101, 101, 101))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(newTaskName, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(newTaskDatePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,10 +193,14 @@ public class NewTask extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(newTaskDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(newTaskDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(newTaskTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(newTaskHH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(newTaskMM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddTask)
                     .addComponent(btnCancelTask))
@@ -163,24 +215,36 @@ public class NewTask extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelTaskActionPerformed
 
     private void btnAddTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTaskActionPerformed
-        String name = newTaskName.getText();
-        String desc = newTaskDesc.getText();
-        String deadline = newTaskDate.getText() + " " + newTaskTime.getText();
+        String name = newTaskName.getText().trim();
+        String desc = newTaskDesc.getText().trim();
+        Date datepicked = newTaskDatePicker.getDate();
+
+        Calendar today = Calendar.getInstance();
+        Calendar deadlineDate = new GregorianCalendar();
+        deadlineDate.setTime(datepicked);
+
+        commitSpinnerEdit(newTaskHH);
+        commitSpinnerEdit(newTaskMM);
+        int hodiny = (Integer) newTaskHH.getValue();
+        int minuty = (Integer) newTaskMM.getValue();
+        
+        deadlineDate.set(Calendar.HOUR_OF_DAY, hodiny);
+        deadlineDate.set(Calendar.MINUTE, minuty);
+        String deadline = dateToString(deadlineDate);
         
         if(newTaskName.getText().trim().length() == 0){
-            JOptionPane.showMessageDialog(null, "You need to name your new task.");
-        }else if(newTaskDesc.getText().trim().length() == 0){
-            JOptionPane.showMessageDialog(null, "You need to put description on your new task.");
-        }else if(newTaskDate.getText().trim().length() != 10){
-            JOptionPane.showMessageDialog(null, "Like this: YYYY-MM-DD");
-        }else if(newTaskTime.getText().trim().length() !=5){
-            JOptionPane.showMessageDialog(null, "Like this: HH:MM");
+            JOptionPane.showMessageDialog(rootPane, "You need to name your new task.", "Invalid task name", JOptionPane.ERROR_MESSAGE);   
+        }else if(deadlineDate.compareTo(today) <= 0){
+            JOptionPane.showMessageDialog(rootPane, "Cannot pick past date!", "Invalid deadline", JOptionPane.ERROR_MESSAGE);
+
         }else{
             ConnectionProvider conn = new ConnectionProvider();
             conn.addTask(name, desc, deadline);
             JOptionPane.showMessageDialog(null, "Task " + name + " added!");
             this.dispose();
         }
+        
+        
 
     }//GEN-LAST:event_btnAddTaskActionPerformed
 
@@ -198,14 +262,36 @@ public class NewTask extends javax.swing.JFrame {
     }//GEN-LAST:event_newTaskDescKeyTyped
 
     private void newTaskDescKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newTaskDescKeyPressed
-        //newTaskDesc.setFocusTraversalKeysEnabled(true);
-        if(evt.equals(KeyEvent.VK_TAB)){
-            evt.consume();
-            System.out.println("tab pressed");
-        }
+
     }//GEN-LAST:event_newTaskDescKeyPressed
 
+    private void newTaskHHKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newTaskHHKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newTaskHHKeyPressed
 
+    private void newTaskDatePickerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newTaskDatePickerKeyPressed
+        
+    }//GEN-LAST:event_newTaskDatePickerKeyPressed
+
+    private void newTaskDatePickerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newTaskDatePickerKeyTyped
+        
+    }//GEN-LAST:event_newTaskDatePickerKeyTyped
+    
+    private String dateToString(Calendar cal){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(cal.getTimeZone());
+        String dateString = sdf.format(cal.getTime());
+        return dateString;
+    }
+
+    private void commitSpinnerEdit(JSpinner spinner){
+        try{
+            spinner.commitEdit();
+        }catch(java.text.ParseException e){
+            System.out.println("Error: " + e);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddTask;
     private javax.swing.JButton btnCancelTask;
@@ -214,10 +300,13 @@ public class NewTask extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField newTaskDate;
+    private org.jdesktop.swingx.JXDatePicker newTaskDatePicker;
     private javax.swing.JTextArea newTaskDesc;
+    private javax.swing.JSpinner newTaskHH;
+    private javax.swing.JSpinner newTaskMM;
     private javax.swing.JTextField newTaskName;
-    private javax.swing.JTextField newTaskTime;
     // End of variables declaration//GEN-END:variables
 }
