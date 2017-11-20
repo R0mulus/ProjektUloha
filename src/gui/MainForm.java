@@ -5,12 +5,20 @@
  */
 package gui;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import ulohyprojekt.ConnectionProvider;
+import ulohyprojekt.Task;
+
 /**
  *
  * @author client
  */
 public class MainForm extends javax.swing.JFrame {
 
+    private List<Task> Tasks = new ArrayList();
+    
     /**
      * Creates new form MainForm
      */
@@ -18,6 +26,8 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Task organizer");
+        
+        fillTable();
     }
 
     /**
@@ -33,6 +43,8 @@ public class MainForm extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableTasks = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuAddNewTask = new javax.swing.JMenuItem();
@@ -47,6 +59,24 @@ public class MainForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("Úlohy");
+
+        tableTasks.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Description", "Due", "Created"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tableTasks);
 
         jMenu1.setText("File");
 
@@ -81,21 +111,25 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addContainerGap(492, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(413, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuAddNewTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAddNewTaskActionPerformed
-        NewTask newtask = new NewTask();
+        NewTask newtask = new NewTask(this);
         newtask.setVisible(true);
     }//GEN-LAST:event_menuAddNewTaskActionPerformed
 
@@ -104,6 +138,36 @@ public class MainForm extends javax.swing.JFrame {
         exitConfirm.setVisible(true);
     }//GEN-LAST:event_MainFormMenuFileExitActionPerformed
 
+    private void fillListWithTasks(){
+        ConnectionProvider conn = new ConnectionProvider();
+        Tasks = conn.getTasks();
+    }
+    
+    public void fillTable(){
+        if(Tasks.isEmpty()){
+            fillListWithTasks();
+        }else{
+            Tasks.removeAll(Tasks);
+            fillListWithTasks();
+        }
+        
+        DefaultTableModel model = (DefaultTableModel) tableTasks.getModel();
+        
+        
+        int rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+
+        for (Task task : Tasks) {
+            Object[] o = new Object[4];
+            o[0] = task.getName();
+            o[1] = task.getDesc();
+            o[2] = task.getDeadline();
+            o[3] = task.getDateCreated();
+            model.addRow(o);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem MainFormMenuFileExit;
@@ -114,6 +178,8 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem menuAddNewTask;
+    private javax.swing.JTable tableTasks;
     // End of variables declaration//GEN-END:variables
 }

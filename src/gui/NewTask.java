@@ -24,15 +24,16 @@ import ulohyprojekt.ConnectionProvider;
  * @author Joseph
  */
 public class NewTask extends javax.swing.JFrame {
-
-
+    private MainForm frame;
+    
     /**
      * Creates new form NewTask
      */
-    public NewTask() {
+    public NewTask(MainForm frame) {
+        this.frame = frame;
         initComponents();
+        //setLocationRelativeTo(rootPane);
         setTitle("New task");
-        setAlwaysOnTop(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Date currDate = new Date();
         newTaskDatePicker.setDate(currDate);
@@ -242,10 +243,12 @@ public class NewTask extends javax.swing.JFrame {
             conn.addTask(name, desc, deadline);
             JOptionPane.showMessageDialog(null, "Task " + name + " added!");
             this.dispose();
-        }
+        }     
         
-        
+        frame.fillTable();
 
+        
+        
     }//GEN-LAST:event_btnAddTaskActionPerformed
 
     private void newTaskNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newTaskNameKeyTyped
