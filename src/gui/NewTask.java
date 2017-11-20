@@ -32,7 +32,7 @@ public class NewTask extends javax.swing.JFrame {
     public NewTask(MainForm frame) {
         this.frame = frame;
         initComponents();
-        //setLocationRelativeTo(rootPane);
+        setLocationRelativeTo(null);
         setTitle("New task");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Date currDate = new Date();

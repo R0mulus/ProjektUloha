@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class ConnectionProvider {
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "admin";
     private static final String URL = "jdbc:mysql://localhost/";
     private static final String DBNAME = "projektuloha";
     private static final String DRIVER = "com.mysql.jdbc.Driver";
