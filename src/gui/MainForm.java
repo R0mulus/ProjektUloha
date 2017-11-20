@@ -11,7 +11,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import ulohyprojekt.ConnectionProvider;
 import ulohyprojekt.Task;
 
@@ -30,8 +32,9 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Task organizer");
-        
         fillTable();
+        TableColumn tableColumn =  tableTasks.getColumnModel().getColumn(4);
+        tableTasks.removeColumn(tableColumn);
     }
 
     /**
@@ -49,6 +52,7 @@ public class MainForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableTasks = new javax.swing.JTable();
+        btnDelete = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuAddNewTask = new javax.swing.JMenuItem();
@@ -69,18 +73,35 @@ public class MainForm extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Name", "Description", "Due", "Created"
+                "Name", "Description", "Due", "Created", "id"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, true, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         jScrollPane1.setViewportView(tableTasks);
+        if (tableTasks.getColumnModel().getColumnCount() > 0) {
+            tableTasks.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
@@ -113,8 +134,13 @@ public class MainForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                 .addContainerGap())
@@ -124,9 +150,14 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addContainerGap(30, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(30, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDelete)
+                        .addGap(79, 79, 79))))
         );
 
         pack();
@@ -141,6 +172,11 @@ public class MainForm extends javax.swing.JFrame {
         ExitConfirm exitConfirm = new ExitConfirm();
         exitConfirm.setVisible(true);
     }//GEN-LAST:event_MainFormMenuFileExitActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        DeleteConfirm deleteconfirm = new DeleteConfirm(tableTasks);
+        deleteconfirm.setVisible(true);
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void fillListWithTasks(){
         ConnectionProvider conn = new ConnectionProvider();
@@ -164,11 +200,12 @@ public class MainForm extends javax.swing.JFrame {
         }
 
         for (Task task : Tasks) {
-            Object[] o = new Object[4];
+            Object[] o = new Object[5];
             o[0] = task.getName();
             o[1] = task.getDesc();
             o[2] = dateToString(task.getDeadline(),true);
             o[3] = dateToString(task.getDateCreated(), false);
+            o[4] = task.getId();
             model.addRow(o);
         }
     }
@@ -181,9 +218,12 @@ public class MainForm extends javax.swing.JFrame {
         String dateString = sdf.format(cal.getTime());
         return dateString;
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem MainFormMenuFileExit;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

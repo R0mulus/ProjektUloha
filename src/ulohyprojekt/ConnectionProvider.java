@@ -67,6 +67,21 @@ public class ConnectionProvider {
         
     }
     
+    public void deleteTask(int id){
+        String query = "DELETE FROM tasks WHERE id = ?";
+        Connection conn = getConnection();
+        if(conn != null){
+            try{
+                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt.setInt(1, id);
+                pstmt.executeUpdate();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.toString());
+            }
+        }
+    }
+    
     public String getCurrentDateTime(){
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
