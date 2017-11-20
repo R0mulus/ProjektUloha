@@ -5,7 +5,11 @@
  */
 package gui;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import ulohyprojekt.ConnectionProvider;
@@ -163,10 +167,19 @@ public class MainForm extends javax.swing.JFrame {
             Object[] o = new Object[4];
             o[0] = task.getName();
             o[1] = task.getDesc();
-            o[2] = task.getDeadline();
-            o[3] = task.getDateCreated();
+            o[2] = dateToString(task.getDeadline(),true);
+            o[3] = dateToString(task.getDateCreated(), false);
             model.addRow(o);
         }
+    }
+    
+    private String dateToString(Date date, boolean time){
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        SimpleDateFormat sdf = time ? new SimpleDateFormat("dd MMM yyyy 'at' HH:mm") : new SimpleDateFormat("dd MMM yyyy");
+        sdf.setTimeZone(cal.getTimeZone());
+        String dateString = sdf.format(cal.getTime());
+        return dateString;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
