@@ -6,6 +6,7 @@
 package gui;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import ulohyprojekt.ConnectionProvider;
@@ -22,7 +23,7 @@ public class DeleteConfirm extends javax.swing.JFrame {
      */
     public DeleteConfirm(JTable table) {
         initComponents();
-        setAlwaysOnTop(true);
+        //setAlwaysOnTop(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setTitle("Confirmation");
@@ -97,6 +98,7 @@ public class DeleteConfirm extends javax.swing.JFrame {
     private void btnYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYesActionPerformed
         System.out.println("Deleted selected");
         deleteRows(table);
+        this.dispose();
     }//GEN-LAST:event_btnYesActionPerformed
 
     public void deleteRows(JTable entryTable) {
@@ -104,12 +106,15 @@ public class DeleteConfirm extends javax.swing.JFrame {
         if (entryTable.getRowCount() > 0) {
             if (entryTable.getSelectedRowCount() > 0) {
                 int selectedRow[] = entryTable.getSelectedRows();
-                for (int i : selectedRow) {
+                for (int i = selectedRow.length-1; i>=0; i--) {
+                    System.out.println(entryTable.getValueAt(i, 4));
                     int id = Integer.parseInt(entryTable.getValueAt(i, 4).toString());
                     model.removeRow(i);
                     ConnectionProvider conn = new ConnectionProvider();
                     conn.deleteTask(id);
                 }
+            }else{
+                JOptionPane.showMessageDialog(null, "No tasks selected!");
             }
         }
     }

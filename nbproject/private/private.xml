@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/SKOLA/Projekty/2.N/projekttask%20edit/src/ulohyprojekt/ConnectionProvider.java</file>
-            <file>file:/F:/SKOLA/Projekty/2.N/projekttask%20edit/src/gui/MainForm.java</file>
-            <file>file:/F:/SKOLA/Projekty/2.N/projekttask%20edit/src/gui/NewTask.java</file>
+            <file>file:/C:/Users/client/Documents/NetBeansProjects/UlohyProjekt/src/gui/MainForm.java</file>
+            <file>file:/C:/Users/client/Documents/NetBeansProjects/UlohyProjekt/src/ulohyprojekt/Task.java</file>
+            <file>file:/C:/Users/client/Documents/NetBeansProjects/UlohyProjekt/src/gui/NewTask.java</file>
+            <file>file:/C:/Users/client/Documents/NetBeansProjects/UlohyProjekt/src/gui/DeleteConfirm.java</file>
+            <file>file:/C:/Users/client/Documents/NetBeansProjects/UlohyProjekt/src/ulohyprojekt/ConnectionProvider.java</file>
         </group>
     </open-files>
 </project-private>

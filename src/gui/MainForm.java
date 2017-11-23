@@ -34,7 +34,9 @@ public class MainForm extends javax.swing.JFrame {
         setTitle("Task organizer");
         fillTable();
         TableColumn tableColumn =  tableTasks.getColumnModel().getColumn(4);
-        tableTasks.removeColumn(tableColumn);
+        tableColumn.setMinWidth(0);
+        tableColumn.setMaxWidth(0);
+        tableColumn.setWidth(0);
     }
 
     /**
